@@ -4,3 +4,4 @@ response_sample
 *.sh
 
 *.fasthttp.gz
+.idea

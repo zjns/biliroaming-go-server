@@ -124,10 +124,10 @@ func (b *BiliroamingGo) handleAndroidSearch(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
-	url := fmt.Sprintf("https://%s/x/v2/search/type?%s", domain, params)
-	b.sugar.Debug("New url: ", url)
+	newUrl := fmt.Sprintf("https://%s/x/v2/search/type?%s", domain, params)
+	b.sugar.Debug("New url: ", newUrl)
 
-	data, err := b.doRequestJson(client, ctx.UserAgent(), url, []byte(http.MethodGet))
+	data, err := b.doRequestJson(client, ctx.UserAgent(), newUrl, []byte(http.MethodGet))
 	if err != nil {
 		b.processError(ctx, err)
 		b.updateHealth(b.getSearchHealth(args.area), -500, "服务器错误")
@@ -142,14 +142,19 @@ func (b *BiliroamingGo) handleAndroidSearch(ctx *fasthttp.RequestCtx) {
 		b.updateHealth(b.getSearchHealth(args.area), 0, "0")
 	}
 
-	dataByte, err := b.addSearchAds([]byte(data), ClientTypeAndroid)
-	if err != nil {
-		b.processError(ctx, err)
-		return
-	}
+	if v.Get("pn") == "1" {
+		dataByte, err := b.addSearchAds(data, ClientTypeAndroid)
+		if err != nil {
+			b.processError(ctx, err)
+			return
+		}
 
-	setDefaultHeaders(ctx)
-	ctx.Write(dataByte)
+		setDefaultHeaders(ctx)
+		ctx.Write(dataByte)
+	} else {
+		setDefaultHeaders(ctx)
+		ctx.Write(data)
+	}
 }
 
 func (b *BiliroamingGo) handleBstarAndroidSearch(ctx *fasthttp.RequestCtx) {
@@ -212,10 +217,10 @@ func (b *BiliroamingGo) handleBstarAndroidSearch(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
-	url := fmt.Sprintf("https://%s/intl/gateway/v2/app/search/type?%s", domain, params)
-	b.sugar.Debug("New url: ", url)
+	newUrl := fmt.Sprintf("https://%s/intl/gateway/v2/app/search/type?%s", domain, params)
+	b.sugar.Debug("New url: ", newUrl)
 
-	data, err := b.doRequestJson(client, ctx.UserAgent(), url, []byte(http.MethodGet))
+	data, err := b.doRequestJson(client, ctx.UserAgent(), newUrl, []byte(http.MethodGet))
 	if err != nil {
 		b.processError(ctx, err)
 		b.updateHealth(b.HealthSearchTH, -500, "服务器错误")
@@ -230,14 +235,19 @@ func (b *BiliroamingGo) handleBstarAndroidSearch(ctx *fasthttp.RequestCtx) {
 		b.updateHealth(b.HealthSearchTH, 0, "0")
 	}
 
-	dataByte, err := b.addSearchAds([]byte(data), ClientTypeBstarA)
-	if err != nil {
-		b.processError(ctx, err)
-		return
-	}
+	if v.Get("pn") == "1" {
+		dataByte, err := b.addSearchAds(data, ClientTypeBstarA)
+		if err != nil {
+			b.processError(ctx, err)
+			return
+		}
 
-	setDefaultHeaders(ctx)
-	ctx.Write(dataByte)
+		setDefaultHeaders(ctx)
+		ctx.Write(dataByte)
+	} else {
+		setDefaultHeaders(ctx)
+		ctx.Write(data)
+	}
 }
 
 func (b *BiliroamingGo) handleWebSearch(ctx *fasthttp.RequestCtx) {
@@ -295,10 +305,10 @@ func (b *BiliroamingGo) handleWebSearch(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
-	url := fmt.Sprintf("https://%s/x/web-interface/search/type?%s", domain, params)
-	b.sugar.Debug("New url: ", url)
+	newUrl := fmt.Sprintf("https://%s/x/web-interface/search/type?%s", domain, params)
+	b.sugar.Debug("New url: ", newUrl)
 
-	data, err := b.doRequestJson(client, ctx.UserAgent(), url, []byte(http.MethodGet))
+	data, err := b.doRequestJson(client, ctx.UserAgent(), newUrl, []byte(http.MethodGet))
 	if err != nil {
 		b.processError(ctx, err)
 		b.updateHealth(b.getSearchHealth(args.area), -500, "服务器错误")
@@ -313,12 +323,17 @@ func (b *BiliroamingGo) handleWebSearch(ctx *fasthttp.RequestCtx) {
 		b.updateHealth(b.getSearchHealth(args.area), 0, "0")
 	}
 
-	dataByte, err := b.addWebSearchAds([]byte(data))
-	if err != nil {
-		b.processError(ctx, err)
-		return
-	}
+	if v.Get("page") == "1" {
+		dataByte, err := b.addWebSearchAds(data)
+		if err != nil {
+			b.processError(ctx, err)
+			return
+		}
 
-	setDefaultHeaders(ctx)
-	ctx.Write(dataByte)
+		setDefaultHeaders(ctx)
+		ctx.Write(dataByte)
+	} else {
+		setDefaultHeaders(ctx)
+		ctx.Write(data)
+	}
 }

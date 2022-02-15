@@ -220,10 +220,10 @@ func (b *BiliroamingGo) handleBstarAndroidSeason2(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
-	url := fmt.Sprintf("https://%s/intl/gateway/v2/ogv/view/app/season2?%s", domain, params)
-	b.sugar.Debug("New url: ", url)
+	newUrl := fmt.Sprintf("https://%s/intl/gateway/v2/ogv/view/app/season2?%s", domain, params)
+	b.sugar.Debug("New url: ", newUrl)
 
-	data, err := b.doRequestJson(client, ctx.UserAgent(), url, []byte(http.MethodGet))
+	data, err := b.doRequestJson(client, ctx.UserAgent(), newUrl, []byte(http.MethodGet))
 	if err != nil {
 		b.processError(ctx, err)
 		b.updateHealth(b.HealthSeasonTH, -500, "服务器错误")

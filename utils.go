@@ -123,7 +123,7 @@ func replaceQn(data []byte, qn int, clientType ClientType) ([]byte, error) {
 	switch clientType {
 	case ClientTypeAndroid:
 		var playUrl android.PlayUrlResult
-		if err := easyjson.Unmarshal([]byte(data), &playUrl); err != nil {
+		if err := easyjson.Unmarshal(data, &playUrl); err != nil {
 			return nil, err
 		}
 		if playUrl.Code != 0 {
@@ -133,7 +133,7 @@ func replaceQn(data []byte, qn int, clientType ClientType) ([]byte, error) {
 		return easyjson.Marshal(playUrl)
 	case ClientTypeBstarA:
 		var playUrl bstar.PlayUrlResult
-		if err := easyjson.Unmarshal([]byte(data), &playUrl); err != nil {
+		if err := easyjson.Unmarshal(data, &playUrl); err != nil {
 			return nil, err
 		}
 		if playUrl.Code != 0 {
@@ -143,7 +143,7 @@ func replaceQn(data []byte, qn int, clientType ClientType) ([]byte, error) {
 		return easyjson.Marshal(playUrl)
 	default:
 		var playUrl web.PlayUrlResult
-		if err := easyjson.Unmarshal([]byte(data), &playUrl); err != nil {
+		if err := easyjson.Unmarshal(data, &playUrl); err != nil {
 			return nil, err
 		}
 		if playUrl.Code != 0 {

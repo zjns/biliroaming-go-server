@@ -158,7 +158,7 @@ func (h *DbHelper) CleanupTHSeasonCache(duration time.Duration) (int64, error) {
 	return models.THSeasonCaches(models.THSeasonCachWhere.UpdatedAt.LTE(startTS)).DeleteAll(h.ctx, h.db)
 }
 
-// GetTHSeasonCache get season api cache from episode id
+// GetTHSeasonEpisodeCache get season api cache from episode id
 func (h *DbHelper) GetTHSeasonEpisodeCache(episodeID int64, isVIP bool) (*models.THSeasonCach, error) {
 	return models.THSeasonCaches(
 		qm.InnerJoin("th_season_episode_caches ON th_season_episode_caches.season_id = th_season_caches.season_id"),
@@ -167,7 +167,7 @@ func (h *DbHelper) GetTHSeasonEpisodeCache(episodeID int64, isVIP bool) (*models
 	).One(h.ctx, h.db)
 }
 
-// InsertOrUpdateTHSeasonCache insert or update season api cache
+// InsertOrUpdateTHSeasonEpisodeCache insert or update season api cache
 func (h *DbHelper) InsertOrUpdateTHSeasonEpisodeCache(episodeID int64, seasonID int64) error {
 	var thSeasonEpisodeCacheTable models.THSeasonEpisodeCach
 	thSeasonEpisodeCacheTable.EpisodeID = episodeID
